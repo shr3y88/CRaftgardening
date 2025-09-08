@@ -6,7 +6,7 @@ export default function EditRecipe() {
     const [recipeData, setRecipeData] = useState({})
     const navigate = useNavigate()
     const{id}=useParams()
-    const API_BASE = "https://craftgardening-2.onrender.com";
+    const API_BASE = "https://craftgardening-3.onrender.com";
 
     useEffect(()=>{
         const getData=async()=>{
@@ -72,3 +72,4 @@ export default function EditRecipe() {
     )
 
 }
+
