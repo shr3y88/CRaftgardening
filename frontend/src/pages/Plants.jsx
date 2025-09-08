@@ -6,7 +6,7 @@ export default function Plants() {
   const [plants, setPlants] = useState([])
   const [filteredPlants, setFilteredPlants] = useState([])
   const [activeType, setActiveType] = useState('All')
-  const API_BASE = "https://craftgardening-2.onrender.com";
+  const API_BASE = "https://craftgardening-3.onrender.com";
 
   useEffect(() => {
     fetchPlants()
@@ -49,4 +49,5 @@ export default function Plants() {
     </div>
   )
 }
+
 
