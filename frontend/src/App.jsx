@@ -10,9 +10,12 @@ import RecipeDetails from './pages/RecipeDetails'
 import Plants from './pages/Plants'
 import Participants from './pages/Participants';
 
+
+
+const API_BASE = "https://craftgardening-2.onrender.com";
 const getAllRecipes = async () => {
   let allRecipes = []
-  const API_BASE = "https://craftgardening-2.onrender.com";
+  
   await axios.get(`${API_BASE}/recipe`).then(res => {
     allRecipes = res.data
   })
@@ -33,10 +36,10 @@ const getFavRecipes = () => {
 const getRecipe = async ({ params }) => {
   let recipe;
   try {
-    const res = await axios.get(`http://localhost:5000/recipe/${params.id}`)
+    const res = await axios.get(`${API_BASE}/recipe/${params.id}`)
     recipe = res.data
 
-    const userRes = await axios.get(`http://localhost:5000/user/${recipe.createdBy}`)
+    const userRes = await axios.get(`${API_BASE}user/${recipe.createdBy}`)
     recipe = { ...recipe, email: userRes.data.email }
 
     return recipe
@@ -51,7 +54,7 @@ const getParticipants = async ({ params }) => {
     const token = localStorage.getItem("token"); // Fetch token from localStorage
 console.log("token:",token)
     const response = await axios.get(
-      `http://localhost:5000/api/participants/${params.id}`,
+      `${API_BASE}/api/participants/${params.id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`, // Include token in header
