@@ -7,25 +7,26 @@ export default function RecipeDetails() {
   const recipe = useLoaderData();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
+  const API_BASE = "https://craftgardening-2.onrender.com";
 
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [phone, setPhone] = useState('');
-  const [participants, setParticipants] = useState([]); // State to hold participants list
+  const [participants, setParticipants] = useState([]); 
 
   useEffect(() => {
-    // Optionally, fetch participants data for the recipe if you want to display it on the details page
+    
     const fetchParticipants = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/participants/${recipe._id}`);
-        setParticipants(res.data); // Store participants data in state
+        const res = await axios.get(`${API_BASE}/api/participants/${recipe._id}`);
+        setParticipants(res.data); 
       } catch (error) {
         console.error('Error fetching participants:', error);
       }
     };
 
-    fetchParticipants(); // Fetch participants when the component mounts
-  }, [recipe._id]); // Re-fetch when the recipe ID changes
+    fetchParticipants(); 
+  }, [recipe._id]);
 
   const handleParticipate = async () => {
     if (!user) {
@@ -47,7 +48,7 @@ export default function RecipeDetails() {
       );
 
       alert("Participation successful!");
-      setName(""); // Reset form fields after success
+      setName(""); 
       setAge("");
       setPhone("");
     } catch (err) {
@@ -118,7 +119,7 @@ export default function RecipeDetails() {
         </div>
       </div>
 
-      {/* Optional Participants List Display */}
+   
       {participants.length > 0 && (
         <div className="participants-list">
           <h4>Current Participants</h4>
@@ -134,3 +135,4 @@ export default function RecipeDetails() {
     </div>
   );
 }
+
