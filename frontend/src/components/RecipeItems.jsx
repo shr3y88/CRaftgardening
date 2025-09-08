@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useLoaderData, useNavigate } from 'react-router-dom'
-import foodImg from '../assets/foodRecipe.png'
+
 import { MdDateRange } from "react-icons/md";
 import { FaHeart } from "react-icons/fa6";
 import { FaEdit } from "react-icons/fa";
@@ -63,4 +63,5 @@ export default function RecipeItems() {
             </div>
         </>
     )
+
 }
