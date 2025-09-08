@@ -6,13 +6,14 @@ export default function Plants() {
   const [plants, setPlants] = useState([])
   const [filteredPlants, setFilteredPlants] = useState([])
   const [activeType, setActiveType] = useState('All')
+  const API_BASE = "https://craftgardening-2.onrender.com";
 
   useEffect(() => {
     fetchPlants()
   }, [])
 
   const fetchPlants = async () => {
-    const res = await axios.get('http://localhost:5000/api/plants')
+    const res = await axios.get(`${API_BASE}/api/plants`)
     setPlants(res.data)
     setFilteredPlants(res.data)
   }
@@ -48,3 +49,4 @@ export default function Plants() {
     </div>
   )
 }
+
