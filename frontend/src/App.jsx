@@ -12,7 +12,8 @@ import Participants from './pages/Participants';
 
 const getAllRecipes = async () => {
   let allRecipes = []
-  await axios.get('http://localhost:5000/recipe').then(res => {
+  const API_BASE = "https://craftgardening-2.onrender.com";
+  await axios.get(`${API_BASE}/recipe`).then(res => {
     allRecipes = res.data
   })
   return allRecipes
