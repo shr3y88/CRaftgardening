@@ -15,6 +15,7 @@ const onHandleSubmit = async (e) => {
   e.preventDefault();
 
   const token = localStorage.getItem("token");
+    console.log(token)
   if (!token) {
     alert("Please login first");
     return;
@@ -79,5 +80,6 @@ const onHandleSubmit = async (e) => {
     )
 
 }
+
 
 
