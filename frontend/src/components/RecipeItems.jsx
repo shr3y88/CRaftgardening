@@ -14,6 +14,7 @@ export default function RecipeItems() {
     let favItems = JSON.parse(localStorage.getItem("fav")) ?? []
     const [isFavRecipe, setIsFavRecipe] = useState(false)
     const navigate=useNavigate()
+    const API_BASE = "https://craftgardening-2.onrender.com";
     console.log(allRecipes)
 
     useEffect(() => {
@@ -21,7 +22,7 @@ export default function RecipeItems() {
     }, [recipes])
 
     const onDelete = async (id) => {
-        await axios.delete(`http://localhost:5000/recipe/${id}`)
+        await axios.delete(`${API_BASE}/recipe/${id}`)
             .then((res) => console.log(res))
         setAllRecipes(recipes => recipes.filter(recipe => recipe._id !== id))
         let filterItem = favItems.filter(recipe => recipe._id !== id)
@@ -65,3 +66,4 @@ export default function RecipeItems() {
     )
 
 }
+
