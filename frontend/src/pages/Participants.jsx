@@ -3,23 +3,23 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const Participants = () => {
-  const { id } = useParams(); // Fetch the 'id' from the URL
-  const [participants, setParticipants] = useState([]); // State to hold participants
-  const [error, setError] = useState(null); // State for error messages
-  const [loading, setLoading] = useState(true); // State to handle loading state
-  const navigate = useNavigate(); // Hook to handle navigation (if needed)
+  const { id } = useParams(); 
+  const [participants, setParticipants] = useState([]); 
+  const [error, setError] = useState(null); 
+  const [loading, setLoading] = useState(true); 
+  const navigate = useNavigate();
   const API_BASE = "https://craftgardening-2.onrender.com";
 
-  // useEffect to fetch participants when component mounts or `id` changes
+ 
   useEffect(() => {
     const fetchParticipants = async () => {
-      setLoading(true); // Start loading when API call is initiated
+      setLoading(true); 
       try {
-        const token = localStorage.getItem("token"); // Get token from local storage
+        const token = localStorage.getItem("token");
 
         if (!token) {
           setError("User is not authenticated.");
-          setLoading(false); // Stop loading if not authenticated
+          setLoading(false);
           return;
         }
 
@@ -27,38 +27,37 @@ const Participants = () => {
           `${API_BASE}/api/participants/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Pass token in header for authentication
+              Authorization: `Bearer ${token}`, 
             },
           }
         );
 
-        setParticipants(response.data || []); // Store participants in state
-        setLoading(false); // Stop loading when data is fetched
+        setParticipants(response.data || []); 
+        setLoading(false); 
       } catch (err) {
-        setLoading(false); // Stop loading if there's an error
+        setLoading(false);
         if (err.response && err.response.status === 401) {
           setError("Session expired. Please log in again.");
-          // Optionally redirect to login page
-          // navigate("/login"); // Uncomment if you want to redirect to login
+          
         } else {
           setError("Failed to load participants.");
         }
         console.error("Error fetching participants:", err);
-        setParticipants([]); // Clear participants data on error
+        setParticipants([]); 
       }
     };
 
     if (id) {
-      fetchParticipants(); // Fetch participants if `id` exists in URL
+      fetchParticipants(); 
     }
-  }, [id, navigate]); // Re-run the effect if `id` or `navigate` changes
+  }, [id, navigate]); 
 
   // Display loading state
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  // Display error message if there is any
+ 
   if (error) {
     return <div>{error}</div>;
   }
@@ -67,7 +66,7 @@ const Participants = () => {
     <div>
       <h1>Participants</h1>
       {participants.length === 0 ? (
-        <p>No participants yet.</p> // Message if no participants are available
+        <p>No participants yet.</p> 
       ) : (
         <ul>
           {participants.map((participant, index) => (
@@ -82,4 +81,5 @@ const Participants = () => {
 };
 
 export default Participants;
+
 
