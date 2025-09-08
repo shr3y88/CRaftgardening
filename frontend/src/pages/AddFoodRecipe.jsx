@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 export default function AddFoodRecipe() {
     const [recipeData, setRecipeData] = useState({})
     const navigate = useNavigate()
+    const API_BASE = "https://craftgardening-2.onrender.com";
     const onHandleChange = (e) => {
         let val = (e.target.name === "ingredients") ? e.target.value.split(",") : (e.target.name === "file") ? e.target.files[0] : e.target.value
         setRecipeData(pre => ({ ...pre, [e.target.name]: val }))
@@ -27,7 +28,7 @@ const onHandleSubmit = async (e) => {
   formData.append("file", recipeData.file); // file is a File object
 
   try {
-    const response = await axios.post("http://localhost:5000/recipe", formData, {
+    const response = await axios.post(`${API_BASE}/recipe`, formData, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
@@ -75,4 +76,5 @@ const onHandleSubmit = async (e) => {
             </div>
         </>
     )
+
 }
