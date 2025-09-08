@@ -6,6 +6,7 @@ export default function EditRecipe() {
     const [recipeData, setRecipeData] = useState({})
     const navigate = useNavigate()
     const{id}=useParams()
+    const API_BASE = "https://craftgardening-2.onrender.com";
 
     useEffect(()=>{
         const getData=async()=>{
@@ -30,7 +31,7 @@ export default function EditRecipe() {
     const onHandleSubmit = async (e) => {
         e.preventDefault()
         console.log(recipeData)
-        await axios.put(`http://localhost:5000/recipe/${id}`, recipeData,{
+        await axios.put(`${API_BASE}/recipe/${id}`, recipeData,{
             headers:{
                 'Content-Type':'multipart/form-data',
                 'authorization':'bearer '+localStorage.getItem("token")
@@ -69,4 +70,5 @@ export default function EditRecipe() {
             </div>
         </>
     )
+
 }
