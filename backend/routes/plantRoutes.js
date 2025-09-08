@@ -2,9 +2,9 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
-const PERENUAL_API_KEY = 'sk-NWiU681ed4178847e10346'; // Replace with your actual key
+const PERENUAL_API_KEY = 'sk-NWiU681ed4178847e10346'; 
 
-router.get('/plants/:type?', async (req, res) => {
+router.get('/plants', async (req, res) => {
   try {
     const response = await axios.get(
       `https://perenual.com/api/species-list?key=${PERENUAL_API_KEY}&page=1`
@@ -17,9 +17,9 @@ router.get('/plants/:type?', async (req, res) => {
       image: p.default_image?.original_url || ''
     }));
 
-   
-    if (req.params.type) {
-      const filterType = req.params.type.toLowerCase();
+
+    if (req.query.type) {
+      const filterType = req.query.type.toLowerCase();
       plants = plants.filter(p => p.type.toLowerCase() === filterType);
     }
 
@@ -31,5 +31,7 @@ router.get('/plants/:type?', async (req, res) => {
 });
 
 
+
 module.exports = router;
+
 
