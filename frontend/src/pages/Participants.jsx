@@ -8,6 +8,7 @@ const Participants = () => {
   const [error, setError] = useState(null); // State for error messages
   const [loading, setLoading] = useState(true); // State to handle loading state
   const navigate = useNavigate(); // Hook to handle navigation (if needed)
+  const API_BASE = "https://craftgardening-2.onrender.com";
 
   // useEffect to fetch participants when component mounts or `id` changes
   useEffect(() => {
@@ -23,7 +24,7 @@ const Participants = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:5000/api/participants/${id}`,
+          `${API_BASE}/api/participants/${id}`,
           {
             headers: {
               Authorization: `Bearer ${token}`, // Pass token in header for authentication
@@ -81,3 +82,4 @@ const Participants = () => {
 };
 
 export default Participants;
+
