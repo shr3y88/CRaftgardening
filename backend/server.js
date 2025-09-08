@@ -11,14 +11,17 @@ const PORT = process.env.PORT || 3000;
 connectDb();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["https://c-raftgardening.vercel.app"], 
+  credentials: true
+}));
 app.use(express.static("public"));
 
 // Route mounts
 app.use("/", require("./routes/user"));
 app.use("/recipe", require("./routes/recipe"));
 app.use("/api", plantRoutes);
-app.use('/api/participants', participantRoutes); // ✅ Ensure correct mounting
+app.use('/api/participants', participantRoutes); 
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
@@ -33,3 +36,4 @@ app.listen(PORT, (err) => {
     console.log(`App is listening on port ${PORT}`);
   }
 });
+
