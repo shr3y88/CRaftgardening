@@ -14,7 +14,7 @@ export default function RecipeItems() {
     let favItems = JSON.parse(localStorage.getItem("fav")) ?? []
     const [isFavRecipe, setIsFavRecipe] = useState(false)
     const navigate=useNavigate()
-    const API_BASE = "https://craftgardening-2.onrender.com";
+    const API_BASE = "https://craftgardening-3.onrender.com";
     console.log(allRecipes)
 
     useEffect(() => {
@@ -66,4 +66,5 @@ export default function RecipeItems() {
     )
 
 }
+
 
