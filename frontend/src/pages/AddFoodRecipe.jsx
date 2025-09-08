@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 export default function AddFoodRecipe() {
     const [recipeData, setRecipeData] = useState({})
     const navigate = useNavigate()
-    const API_BASE = "https://craftgardening-2.onrender.com";
+    const API_BASE = "https://craftgardening-3.onrender.com";
     const onHandleChange = (e) => {
         let val = (e.target.name === "ingredients") ? e.target.value.split(",") : (e.target.name === "file") ? e.target.files[0] : e.target.value
         setRecipeData(pre => ({ ...pre, [e.target.name]: val }))
@@ -78,3 +78,4 @@ const onHandleSubmit = async (e) => {
     )
 
 }
+
