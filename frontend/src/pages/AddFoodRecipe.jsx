@@ -28,12 +28,13 @@ const onHandleSubmit = async (e) => {
   formData.append("file", recipeData.file); // file is a File object
 
   try {
-    const response = await axios.post(`${API_BASE}/recipe`, formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await axios.post(`${API_BASE}/api/events`, formData, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  },
+});
+
 
     console.log("Recipe added:", response.data);
     navigate("/"); // or your success redirect route
@@ -78,4 +79,5 @@ const onHandleSubmit = async (e) => {
     )
 
 }
+
 
