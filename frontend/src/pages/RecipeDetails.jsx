@@ -7,7 +7,7 @@ export default function RecipeDetails() {
   const recipe = useLoaderData();
   const navigate = useNavigate();
   const user = JSON.parse(localStorage.getItem("user"));
-  const API_BASE = "https://craftgardening-2.onrender.com";
+  const API_BASE = "https://craftgardening-3.onrender.com";
 
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
@@ -135,4 +135,5 @@ export default function RecipeDetails() {
     </div>
   );
 }
+
 
