@@ -6,11 +6,13 @@ export default function InputForm({setIsOpen}) {
    const [password,setPassword]=useState("")
    const [isSignUp,setIsSignUp]=useState(false) 
    const [error,setError]=useState("")
+   const API_BASE = "https://craftgardening-2.onrender.com";
+
 
   const handleOnSubmit=async(e)=>{
     e.preventDefault()
     let endpoint=(isSignUp) ? "signUp" : "login"
-    await axios.post(`http://localhost:5000/${endpoint}`,{email,password})
+    await axios.post(`${API_BASE}/${endpoint}`,{email,password})
     .then((res)=>{
         localStorage.setItem("token",res.data.token)
         localStorage.setItem("user",JSON.stringify(res.data.user))
@@ -36,4 +38,5 @@ export default function InputForm({setIsOpen}) {
         </form>
     </>
   )
+
 }
