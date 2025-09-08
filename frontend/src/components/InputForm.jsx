@@ -6,7 +6,7 @@ export default function InputForm({setIsOpen}) {
    const [password,setPassword]=useState("")
    const [isSignUp,setIsSignUp]=useState(false) 
    const [error,setError]=useState("")
-   const API_BASE = "https://craftgardening-2.onrender.com";
+   const API_BASE = "https://craftgardening-3.onrender.com";
 
 
   const handleOnSubmit=async(e)=>{
@@ -40,3 +40,4 @@ export default function InputForm({setIsOpen}) {
   )
 
 }
+
