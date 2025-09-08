@@ -8,7 +8,7 @@ const Participants = () => {
   const [error, setError] = useState(null); 
   const [loading, setLoading] = useState(true); 
   const navigate = useNavigate();
-  const API_BASE = "https://craftgardening-2.onrender.com";
+  const API_BASE = "https://craftgardening-3.onrender.com";
 
  
   useEffect(() => {
@@ -81,5 +81,6 @@ const Participants = () => {
 };
 
 export default Participants;
+
 
 
