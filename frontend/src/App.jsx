@@ -12,7 +12,7 @@ import Participants from './pages/Participants';
 
 
 
-const API_BASE = "https://craftgardening-2.onrender.com";
+const API_BASE = "https://craftgardening-3.onrender.com";
 const getAllRecipes = async () => {
   let allRecipes = []
   
