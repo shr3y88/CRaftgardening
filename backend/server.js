@@ -19,7 +19,8 @@ app.use(express.static("public"));
 
 // Route mounts
 app.use("/", require("./routes/user"));
-app.use("/api/events", require("./routes/recipe"));
+app.use("/api/recipes", require("./routes/recipe"));
+
 app.use("/api", plantRoutes);
 app.use('/api/participants', participantRoutes); 
 
@@ -36,5 +37,6 @@ app.listen(PORT, (err) => {
     console.log(`App is listening on port ${PORT}`);
   }
 });
+
 
 
