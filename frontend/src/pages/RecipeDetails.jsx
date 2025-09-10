@@ -14,18 +14,18 @@ export default function RecipeDetails() {
   const [phone, setPhone] = useState('');
   const [participants, setParticipants] = useState([]); 
 
-  useEffect(() => {
-    
-    const fetchParticipants = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/api/participants/${recipe._id}`);
-        setParticipants(res.data); 
-      } catch (error) {
-        console.error('Error fetching participants:', error);
-      }
-    };
+  // Fetch participants
+  const fetchParticipants = async () => {
+    try {
+      const res = await axios.get(`${API_BASE}/api/participants/${recipe._id}`);
+      setParticipants(res.data); 
+    } catch (error) {
+      console.error('Error fetching participants:', error);
+    }
+  };
 
-    fetchParticipants(); 
+  useEffect(() => {
+    fetchParticipants();
   }, [recipe._id]);
 
   const handleParticipate = async () => {
@@ -39,10 +39,8 @@ export default function RecipeDetails() {
 
     try {
       const token = localStorage.getItem("token");
-      console.log("Recipe ID for participation:", recipe._id);
-
       const res = await axios.post(
-        `http://localhost:5000/api/participants/${recipe._id}`,
+        `${API_BASE}/api/participants/${recipe._id}`,
         { name, age, phone },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -51,6 +49,7 @@ export default function RecipeDetails() {
       setName(""); 
       setAge("");
       setPhone("");
+      fetchParticipants(); // 🔄 refresh list
     } catch (err) {
       console.error(err);
       alert("Error submitting participation");
@@ -71,7 +70,7 @@ export default function RecipeDetails() {
       <h3 className='title'>{recipe.title}</h3>
 
       <img
-        src={`http://localhost:5000/images/${recipe.coverImage}`}
+        src={`${API_BASE}/images/${recipe.coverImage}`}
         width="220px"
         height="200px"
         alt="recipe"
@@ -119,7 +118,6 @@ export default function RecipeDetails() {
         </div>
       </div>
 
-   
       {participants.length > 0 && (
         <div className="participants-list">
           <h4>Current Participants</h4>
@@ -135,5 +133,4 @@ export default function RecipeDetails() {
     </div>
   );
 }
-
 
