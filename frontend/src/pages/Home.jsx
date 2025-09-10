@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import RecipeItems from '../components/RecipeItems'
@@ -11,11 +10,11 @@ export default function Home() {
     const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
 
-    const addRecipe = () => {
+    const promoteEvent = () => {
         let token = localStorage.getItem("token")
-        if (token)
+        if (token) {
             navigate("/addRecipe")
-        else {
+        } else {
             setIsOpen(true)
         }
     }
@@ -26,16 +25,25 @@ export default function Home() {
                 <div className='left'>
                     <h1>CRaftGardening</h1>
                     <h4>Grow Green, Live Clean — Discover, Learn, and Connect with Nature.</h4>
-                    <hr></hr>
-                    <h5>CraftGardening is a modern gardening companion website designed to help plant lovers discover detailed information about indoor and outdoor plants, including care tips and environmental needs. Users can explore a wide variety of plant types, participate in or promote gardening events happening across India. So lets grow together with the plants.</h5>
-                    <button onClick={addRecipe}>Promote an Event</button>
+                    <hr />
+                    <h5>
+                        CraftGardening is a modern gardening companion website designed to help plant lovers discover detailed information about indoor and outdoor plants, including care tips and environmental needs. 
+                        Users can explore a wide variety of plant types, participate in or promote gardening events happening across India. 
+                        So let's grow together with the plants.
+                    </h5>
+                    <button onClick={promoteEvent}>Promote an Event</button>
                 </div>
                 <div className='right'>
-                    <img src="plants.png" width="320px" height="600px"></img>
+                    <img src="plants.png" width={320} height={600} alt="Plants" />
                 </div>
             </section>
-           
-            {(isOpen) && <Modal onClose={() => setIsOpen(false)}><InputForm setIsOpen={() => setIsOpen(false)} /></Modal>}
+
+            {isOpen && (
+                <Modal onClose={() => setIsOpen(false)}>
+                    <InputForm setIsOpen={setIsOpen} />
+                </Modal>
+            )}
+
             <div className='recipe'>
                 <RecipeItems />
             </div>
