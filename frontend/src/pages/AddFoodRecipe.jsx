@@ -2,86 +2,113 @@ import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export default function AddFoodRecipe() {
-    const [recipeData, setRecipeData] = useState({})
+export default function AddEvent() {
+    const [eventData, setEventData] = useState({})
     const navigate = useNavigate()
     const API_BASE = "https://craftgardening-3.onrender.com";
+
     const onHandleChange = (e) => {
-        let val = (e.target.name === "ingredients") ? e.target.value.split(",") : (e.target.name === "file") ? e.target.files[0] : e.target.value
-        setRecipeData(pre => ({ ...pre, [e.target.name]: val }))
+        let val = (e.target.name === "file") 
+            ? e.target.files[0] 
+            : e.target.value;
+
+        setEventData(prev => ({ ...prev, [e.target.name]: val }))
     }
-  
-const onHandleSubmit = async (e) => {
-  e.preventDefault();
 
-  const token = localStorage.getItem("token");
-    console.log(token)
-  if (!token) {
-    alert("Please login first");
-    return;
-  }
+    const onHandleSubmit = async (e) => {
+        e.preventDefault();
 
-  const formData = new FormData();
-  formData.append("title", recipeData.title);
-  formData.append("time", recipeData.time);
-  formData.append("ingredients", recipeData.ingredients); // Already a string from textarea
-  formData.append("instructions", recipeData.instructions);
-  formData.append("file", recipeData.file); // file is a File object
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Please login first");
+            return;
+        }
 
-  try {
-   const response = await axios.post(`${API_BASE}/api/recipes`, formData, {
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "multipart/form-data",
-  },
-});
+        const formData = new FormData();
+        formData.append("title", eventData.title);
+        formData.append("time", eventData.time);
+        formData.append("description", eventData.description);
+        formData.append("place", eventData.place);
+        formData.append("file", eventData.file);
 
+        try {
+            const response = await axios.post(`${API_BASE}/api/events`, formData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "multipart/form-data",
+                },
+            });
 
-
-    console.log("Recipe added:", response.data);
-    navigate("/"); // or your success redirect route
-  } catch (error) {
-    console.error("Error adding recipe:", error.response?.data || error.message);
-    alert("Failed to add recipe. Make sure you're logged in.");
-  }
-};
+            console.log("Event added:", response.data);
+            navigate("/Events"); 
+        } catch (error) {
+            console.error("Error adding event:", error.response?.data || error.message);
+            alert("Failed to add event. Make sure you're logged in.");
+        }
+    };
 
     return (
         <>
-       <h2>Events List</h2>
+            <h2>Events</h2>
             <div className='container'>
-                
                 <form className='form' onSubmit={onHandleSubmit}>
                     <h2>Create Event</h2>
-                    <hr></hr>
+                    <hr />
+
                     <div className='form-control'>
                         <label>Title</label>
-                        <input type="text" className='input' name="title" onChange={onHandleChange}></input>
+                        <input 
+                            type="text" 
+                            className='input' 
+                            name="title" 
+                            onChange={onHandleChange} 
+                        />
                     </div>
+
                     <div className='form-control'>
                         <label>Date</label>
-                        <input type="text" className='input' name="time" onChange={onHandleChange}></input>
+                        <input 
+                            type="text" 
+                            className='input' 
+                            name="time" 
+                            onChange={onHandleChange} 
+                        />
                     </div>
+
                     <div className='form-control'>
                         <label>Description</label>
-                        <textarea type="text" className='input-textarea' name="ingredients" rows="5" onChange={onHandleChange}></textarea>
+                        <textarea 
+                            className='input-textarea' 
+                            name="description" 
+                            rows="5" 
+                            onChange={onHandleChange} 
+                        />
                     </div>
+
                     <div className='form-control'>
                         <label>Place</label>
-                        <textarea type="text" className='input-textarea' name="instructions" rows="5" onChange={onHandleChange}></textarea>
+                        <textarea 
+                            className='input-textarea' 
+                            name="place" 
+                            rows="3" 
+                            onChange={onHandleChange} 
+                        />
                     </div>
+
                     <div className='form-control'>
                         <label>Event Poster</label>
-                        <input type="file" className='input' name="file" onChange={onHandleChange}></input>
+                        <input 
+                            type="file" 
+                            className='input' 
+                            name="file" 
+                            onChange={onHandleChange} 
+                        />
                     </div>
-                    <button type="submit">Add Recipe</button>
+
+                    <button type="submit">Add Event</button>
                 </form>
             </div>
         </>
     )
-
 }
-
-
-
 
