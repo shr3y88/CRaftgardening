@@ -4,39 +4,53 @@ const dotenv = require("dotenv").config();
 const connectDb = require("./config/connectionDb");
 const cors = require("cors");
 
-const plantRoutes = require('./routes/plantRoutes');
+
+const plantRoutes = require("./routes/plantRoutes");
 const participantRoutes = require("./routes/participantRoutes");
+const userRoutes = require("./routes/user");
+const recipeRoutes = require("./routes/recipe");
 
 const PORT = process.env.PORT || 3000;
+
+
 connectDb();
 
+
 app.use(express.json());
-app.use(cors({
-  origin: ["https://c-raftgardening.vercel.app"], 
-  credentials: true
-}));
-app.use(express.static("public"));
 
-// Route mounts
-app.use("/", require("./routes/user"));
-app.use("/api/recipes", require("./routes/recipe"));
 
-app.use("/api", plantRoutes);
-app.use('/api/participants', participantRoutes); 
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",          
+      "http://localhost:3000",            
+      "https://c-raftgardening.vercel.app" 
+    ],
+    credentials: true,
+  })
+);
 
-// Global Error Handling Middleware
+
+app.use("/images", express.static("public/images"));
+
+
+app.use("/api/users", userRoutes);       
+app.use("/api/recipes", recipeRoutes);  
+app.use("/api/plants", plantRoutes);     
+app.use("/api/participants", participantRoutes);
+
+
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Error:", err.stack);
   res.status(500).json({ message: "Something went wrong" });
 });
+
 
 app.listen(PORT, (err) => {
   if (err) {
     console.error("Error starting server:", err);
   } else {
-    console.log(`App is listening on port ${PORT}`);
+    console.log(` Server running on port ${PORT}`);
   }
 });
-
-
 
