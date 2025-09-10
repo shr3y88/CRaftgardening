@@ -29,12 +29,13 @@ const onHandleSubmit = async (e) => {
   formData.append("file", recipeData.file); // file is a File object
 
   try {
-    const response = await axios.post(`${API_BASE}/api/events`, formData, {
+   const response = await axios.post(`${API_BASE}/api/recipes`, formData, {
   headers: {
     Authorization: `Bearer ${token}`,
     "Content-Type": "multipart/form-data",
   },
 });
+
 
 
     console.log("Recipe added:", response.data);
@@ -80,6 +81,7 @@ const onHandleSubmit = async (e) => {
     )
 
 }
+
 
 
 
