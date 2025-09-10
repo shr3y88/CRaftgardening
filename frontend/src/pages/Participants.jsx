@@ -10,7 +10,6 @@ const Participants = () => {
   const navigate = useNavigate();
   const API_BASE = "https://craftgardening-3.onrender.com";
 
- 
   useEffect(() => {
     const fetchParticipants = async () => {
       setLoading(true); 
@@ -18,7 +17,7 @@ const Participants = () => {
         const token = localStorage.getItem("token");
 
         if (!token) {
-          setError("User is not authenticated.");
+          setError("You must log in to view participants.");
           setLoading(false);
           return;
         }
@@ -26,51 +25,52 @@ const Participants = () => {
         const response = await axios.get(
           `${API_BASE}/api/participants/${id}`,
           {
-            headers: {
-              Authorization: `Bearer ${token}`, 
-            },
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
         setParticipants(response.data || []); 
-        setLoading(false); 
       } catch (err) {
-        setLoading(false);
-        if (err.response && err.response.status === 401) {
+        if (err.response?.status === 401) {
           setError("Session expired. Please log in again.");
-          
         } else {
           setError("Failed to load participants.");
         }
-        console.error("Error fetching participants:", err);
         setParticipants([]); 
+      } finally {
+        setLoading(false);
       }
     };
 
     if (id) {
       fetchParticipants(); 
     }
-  }, [id, navigate]); 
+  }, [id]);  // removed navigate
 
-  // Display loading state
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>Loading participants...</div>;
   }
 
- 
   if (error) {
-    return <div>{error}</div>;
+    return (
+      <div>
+        <p>{error}</p>
+        {error.includes("log in") && (
+          <button onClick={() => navigate("/login")}>Go to Login</button>
+        )}
+      </div>
+    );
   }
 
   return (
-    <div>
+    <div className="participants-page">
       <h1>Participants</h1>
       {participants.length === 0 ? (
-        <p>No participants yet.</p> 
+        <p>No participants yet. Be the first to join!</p>
       ) : (
         <ul>
-          {participants.map((participant, index) => (
-            <li key={index}>
+          {participants.map((participant) => (
+            <li key={participant._id || participant.phone}>
               {participant.name}, {participant.age}, {participant.phone}
             </li>
           ))}
@@ -81,6 +81,4 @@ const Participants = () => {
 };
 
 export default Participants;
-
-
 
