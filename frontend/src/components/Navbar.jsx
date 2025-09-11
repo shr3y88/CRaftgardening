@@ -33,7 +33,7 @@ export default function Navbar() {
                 <li><NavLink to="/">Home</NavLink></li>
                 <li><NavLink to="/plants">Plants</NavLink></li>
               
-                <li onClick={()=>isLogin && setIsOpen(true)}><NavLink to={ !isLogin ? "/Events" : "/"}>Events</NavLink></li>
+                <li onClick={()=>isLogin && setIsOpen(true)}><NavLink to={ !isLogin ? "/events" : "/"}>Events</NavLink></li>
                
                 <li onClick={checkLogin}><p className='login'>{ (isLogin)? "Login": "Logout" }{user?.email ? `(${user?.email})` : ""}</p></li>
             </ul>
@@ -42,3 +42,4 @@ export default function Navbar() {
     </>
   )
 }  
+
