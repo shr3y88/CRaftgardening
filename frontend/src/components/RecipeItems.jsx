@@ -24,7 +24,7 @@ export default function RecipeItems() {
   const onDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${API_BASE}/recipe/${id}`, {
+      await axios.delete(`${API_BASE}/api/recipe/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -100,4 +100,5 @@ export default function RecipeItems() {
     </div>
   );
 }
+
 
