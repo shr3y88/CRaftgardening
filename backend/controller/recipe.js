@@ -1,25 +1,29 @@
+// controller/recipe.js
+
 const Recipes = require("../models/recipe");
 const multer = require("multer");
 
-// Multer setup
+// Configure Multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./public/images");
   },
   filename: function (req, file, cb) {
-    const filename = Date.now() + "-" + file.originalname;
+    const filename = Date.now() + "-" + file.fieldname;
     cb(null, filename);
   },
 });
+
 const upload = multer({ storage: storage });
 
 // Get all recipes
 const getRecipes = async (req, res) => {
   try {
     const recipes = await Recipes.find();
-    res.json(recipes);
+    return res.json(recipes);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch recipes" });
+    console.error("Error fetching recipes:", err);
+    return res.status(500).json({ message: "Failed to fetch recipes" });
   }
 };
 
@@ -30,51 +34,66 @@ const getRecipe = async (req, res) => {
     if (!recipe) return res.status(404).json({ message: "Recipe not found" });
     res.json(recipe);
   } catch (err) {
-    res.status(500).json({ message: "Failed to fetch recipe" });
+    console.error("Error fetching recipe:", err);
+    return res.status(500).json({ message: "Failed to fetch recipe" });
   }
 };
 
-// Add new recipe
-const addRecipe = async (req, res) => {
+// Add new recipe/event
+const addEvent = async (req, res) => {
   try {
+    console.log("User:", req.user);
+    console.log("File:", req.file);
+    console.log("Body:", req.body);
+
     const { title, ingredients, instructions, time } = req.body;
 
     if (!title || !ingredients || !instructions) {
-      return res.status(400).json({ message: "Required fields can't be empty" });
+      return res
+        .status(400)
+        .json({ message: "Required fields can't be empty" });
     }
 
     const newRecipe = await Recipes.create({
       title,
-      ingredients: typeof ingredients === "string" ? ingredients.split(",") : ingredients,
+      ingredients:
+        typeof ingredients === "string"
+          ? ingredients.split(",")
+          : ingredients,
       instructions,
       time,
-      coverImage: req.file?.filename,
+      coverImage: req.file.filename,
       createdBy: req.user.id,
     });
 
-    res.json(newRecipe);
+    return res.json(newRecipe);
   } catch (err) {
-    res.status(500).json({ message: "Internal Server Error", error: err.message });
+    console.error("Error in addEvent:", err);
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error", error: err.message });
   }
 };
 
 // Edit recipe
 const editRecipe = async (req, res) => {
+  const { title, ingredients, instructions, time } = req.body;
   try {
     let recipe = await Recipes.findById(req.params.id);
     if (!recipe) return res.status(404).json({ message: "Recipe not found" });
 
-    const coverImage = req.file?.filename ? req.file.filename : recipe.coverImage;
+    let coverImage = req.file?.filename ? req.file.filename : recipe.coverImage;
 
-    const updated = await Recipes.findByIdAndUpdate(
+    const updatedRecipe = await Recipes.findByIdAndUpdate(
       req.params.id,
       { ...req.body, coverImage },
       { new: true }
     );
 
-    res.json(updated);
+    res.json(updatedRecipe);
   } catch (err) {
-    res.status(500).json({ message: "Error updating recipe", error: err.message });
+    console.error("Error editing recipe:", err);
+    return res.status(500).json({ message: "Failed to update recipe" });
   }
 };
 
@@ -84,8 +103,17 @@ const deleteRecipe = async (req, res) => {
     await Recipes.deleteOne({ _id: req.params.id });
     res.json({ status: "ok" });
   } catch (err) {
-    res.status(400).json({ message: "Error deleting recipe", error: err.message });
+    console.error("Error deleting recipe:", err);
+    return res.status(400).json({ message: "Error deleting recipe" });
   }
 };
 
-module.exports = { getRecipes, getRecipe, addRecipe, editRecipe, deleteRecipe, upload };
+module.exports = {
+  getRecipes,
+  getRecipe,
+  addEvent,
+  editRecipe,
+  deleteRecipe,
+  upload,
+};
+
