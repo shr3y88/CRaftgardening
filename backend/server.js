@@ -5,8 +5,8 @@ const cors = require("cors");
 
 const plantRoutes = require("./routes/plantRoutes");
 const participantRoutes = require("./routes/participantRoutes");
-const userRoutes = require("./routes/user");
-const recipeRoutes = require("./routes/recipe");
+const user = require("./routes/user");
+const recipe = require("./routes/recipe");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -47,6 +47,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
