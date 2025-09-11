@@ -32,8 +32,8 @@ app.use(
 app.use("/images", express.static("public/images"));
 
 
-app.use("/api/users", userRoutes);       
-app.use("/api/recipe", recipeRoutes);     
+app.use("/api/users", user);       
+app.use("/api/recipe", recipe);     
 app.use("/api", plantRoutes);       
 app.use("/api/participants", participantRoutes); 
 
@@ -47,6 +47,7 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
 
 
