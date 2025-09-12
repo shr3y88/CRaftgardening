@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:5000'
 
 export default function Auth() {
+  const navigate = useNavigate()
   const [isLogin, setIsLogin] = useState(true)
   const [form, setForm] = useState({ name: '', email: '', password: '' })
   const [message, setMessage] = useState('')
@@ -15,7 +17,12 @@ export default function Auth() {
       const payload = isLogin ? { email: form.email, password: form.password } : form
       const res = await axios.post(`${API_BASE}${url}`, payload)
       localStorage.setItem('token', res.data.token)
-      setMessage('Success! Token saved.')
+      setMessage('Success! Redirecting to dashboard...')
+      
+      // Redirect to dashboard after successful login
+      setTimeout(() => {
+        navigate('/dashboard')
+      }, 1500)
     } catch (e) {
       setMessage(e?.response?.data?.message || 'Error')
     }
