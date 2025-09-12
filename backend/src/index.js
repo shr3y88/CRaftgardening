@@ -23,7 +23,36 @@ import participantRoutes from './routes/participantRoutes.js';
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_ORIGIN || '*', credentials: true }));
+
+const allowedFromEnv = (process.env.CLIENT_ORIGIN || '')
+  .split(',')
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // non-browser or same-origin
+    
+    // Allow localhost for development
+    const isLocalhost = /^http:\/\/localhost:\d{4,5}$/.test(origin);
+    
+    // Allow Vercel domains (both old and new)
+    const isVercel = /^https:\/\/.*\.vercel\.app$/.test(origin);
+    
+    // Allow specific domains from environment
+    const isAllowedDomain = allowedFromEnv.includes(origin) || allowedFromEnv.includes('*');
+    
+    if (isLocalhost || isVercel || isAllowedDomain) {
+      return callback(null, true);
+    }
+    
+    console.log(`CORS blocked for origin: ${origin}`);
+    return callback(new Error(`CORS blocked for origin ${origin}`));
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(morgan('dev'));
 
@@ -51,5 +80,6 @@ connectToDatabase()
     console.error('Failed to connect to database', err);
     process.exit(1);
   });
+
 
 
