@@ -46,4 +46,26 @@ export const listParticipantsForEvent = asyncHandler(async (req, res) => {
   res.json({ participants });
 });
 
+export const getUserEvents = asyncHandler(async (req, res) => {
+  const events = await Event.find({ createdBy: req.user._id }).populate('createdBy', 'name email').sort({ createdAt: -1 });
+  res.json({ events });
+});
+
+export const getUserEventsWithParticipants = asyncHandler(async (req, res) => {
+  const events = await Event.find({ createdBy: req.user._id }).populate('createdBy', 'name email').sort({ createdAt: -1 });
+  
+  // Get participants for each event
+  const eventsWithParticipants = await Promise.all(
+    events.map(async (event) => {
+      const participants = await Participant.find({ event: event._id }).sort({ createdAt: -1 });
+      return {
+        ...event.toObject(),
+        participants
+      };
+    })
+  );
+  
+  res.json({ events: eventsWithParticipants });
+});
+
 
