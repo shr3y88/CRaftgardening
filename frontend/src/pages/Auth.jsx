@@ -21,15 +21,11 @@ export default function Auth() {
         localStorage.setItem('token', res.data.token)
         setMessage('Success! Redirecting to dashboard...')
         
-        // Redirect to dashboard after successful login
-        setTimeout(() => {
-          navigate('/dashboard')
-        }, 1000)
+        // Dispatch custom event to notify navbar of login
+        window.dispatchEvent(new CustomEvent('userLoggedIn'))
         
-        // Also try immediate redirect as backup
-        setTimeout(() => {
-          window.location.href = '/dashboard'
-        }, 2000)
+        // Immediate redirect without delay
+        navigate('/dashboard')
       } else {
         setMessage('Login successful but no token received')
       }
