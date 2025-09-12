@@ -10,6 +10,7 @@ export default function Dashboard() {
   const [selectedEvent, setSelectedEvent] = useState(null)
 
   useEffect(() => {
+    console.log('Dashboard component mounted')
     fetchUserEvents()
   }, [])
 
@@ -78,6 +79,7 @@ export default function Dashboard() {
       <div className="text-center">
         <h1 className="text-3xl font-bold text-emerald-800 mb-2">My Dashboard</h1>
         <p className="text-slate-600">Manage your events and view participants</p>
+        <p className="text-xs text-gray-500 mt-2">Dashboard loaded successfully!</p>
       </div>
 
       {/* Stats Cards */}
