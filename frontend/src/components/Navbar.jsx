@@ -1,8 +1,9 @@
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const location = useLocation()
 
   useEffect(() => {
     const checkAuth = () => {
@@ -10,24 +11,32 @@ export default function Navbar() {
       setIsAuthenticated(!!token)
     }
     
-    // Check auth on mount
+    // Check auth on mount and when location changes
     checkAuth()
     
     // Listen for storage changes (when token is added/removed)
     window.addEventListener('storage', checkAuth)
     
-    // Also check periodically in case of same-tab changes
-    const interval = setInterval(checkAuth, 1000)
+    // Listen for custom login event
+    window.addEventListener('userLoggedIn', checkAuth)
+    window.addEventListener('userLoggedOut', checkAuth)
+    
+    // Check when route changes (in case user navigates after login)
+    const interval = setInterval(checkAuth, 500)
     
     return () => {
       window.removeEventListener('storage', checkAuth)
+      window.removeEventListener('userLoggedIn', checkAuth)
+      window.removeEventListener('userLoggedOut', checkAuth)
       clearInterval(interval)
     }
-  }, [])
+  }, [location])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
     setIsAuthenticated(false)
+    // Dispatch custom event to notify of logout
+    window.dispatchEvent(new CustomEvent('userLoggedOut'))
     window.location.href = '/'
   }
 
@@ -71,5 +80,6 @@ function Nav({ to, label }) {
     </NavLink>
   )
 }
+
 
 
