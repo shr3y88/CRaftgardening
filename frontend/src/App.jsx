@@ -3,9 +3,11 @@ import Home from './pages/Home.jsx'
 import Plants from './pages/Plants.jsx'
 import Events from './pages/Events.jsx'
 import Auth from './pages/Auth.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 import Chatbox from './components/Chatbox.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
 
 export default function App() {
   return (
@@ -17,6 +19,11 @@ export default function App() {
           <Route path="/plants" element={<Plants />} />
           <Route path="/events" element={<Events />} />
           <Route path="/auth" element={<Auth />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          } />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
