@@ -1,6 +1,36 @@
 import { Link, NavLink } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 export default function Navbar() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token')
+      setIsAuthenticated(!!token)
+    }
+    
+    // Check auth on mount
+    checkAuth()
+    
+    // Listen for storage changes (when token is added/removed)
+    window.addEventListener('storage', checkAuth)
+    
+    // Also check periodically in case of same-tab changes
+    const interval = setInterval(checkAuth, 1000)
+    
+    return () => {
+      window.removeEventListener('storage', checkAuth)
+      clearInterval(interval)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setIsAuthenticated(false)
+    window.location.href = '/'
+  }
+
   return (
     <header className="sticky top-0 z-20 border-b bg-white/80 backdrop-blur">
       <nav className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
@@ -12,7 +42,19 @@ export default function Navbar() {
           <Nav to="/" label="Home" />
           <Nav to="/plants" label="Plants" />
           <Nav to="/events" label="Events" />
-          <Nav to="/auth" label="Login" />
+          {isAuthenticated ? (
+            <>
+              <Nav to="/dashboard" label="Dashboard" />
+              <button 
+                onClick={handleLogout}
+                className="px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100"
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <Nav to="/auth" label="Login" />
+          )}
         </div>
       </nav>
     </header>
