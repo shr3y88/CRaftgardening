@@ -24,7 +24,6 @@ export default function App() {
               <Dashboard />
             </ProtectedRoute>
           } />
-          <Route path="/test-dashboard" element={<Dashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
